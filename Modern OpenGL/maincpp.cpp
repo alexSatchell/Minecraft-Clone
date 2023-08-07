@@ -4,6 +4,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+/*
+TODOS
+--------------------
+Add GLM Math Library
+*/
+
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
