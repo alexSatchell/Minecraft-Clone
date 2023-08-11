@@ -65,15 +65,18 @@ int main()
 	};
 
 	// Data for vertex shader
-	Vertex vertices[6] = {
-		// Triangle 1
-		{ glm::vec3(-0.5f,  0.5f, 1.0f), glm::vec4(0.9f, 0.8f, 0.2f, 1.0f) },
-		{ glm::vec3(-0.5f, -0.5f, 1.0f),glm::vec4(0.2f, 0.9f, 0.8f, 1.0f) },
-		{ glm::vec3(0.5f, -0.5f, 1.0f),glm::vec4(0.9f, 0.2f, 0.8f, 1.0f) },
-		// Triangle 2
-		{ glm::vec3(0.5f, -0.5f, 1.0f),glm::vec4(0.7f, 0.4f, 0.2f, 1.0f) },
-		{ glm::vec3(0.5f,  0.5f, 1.0f),glm::vec4(0.6f, 0.9f, 0.1f, 1.0f) },
-		{ glm::vec3(-0.5f,  0.5f, 1.0f),glm::vec4(0.8f, 0.7, 0.9f, 1.0f) }
+	Vertex vertices[] {
+		// Rectangle Vertices
+		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(0.9f, 0.8f, 0.2f, 1.0f) }, // Top Left
+		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.2f, 0.9f, 0.8f, 1.0f) }, // Bottom Left
+		{ glm::vec3(0.5f, -0.5f, 1.0f),  glm::vec4(0.9f, 0.2f, 0.8f, 1.0f) }, // Bottom Right 
+		{ glm::vec3(0.5f, 0.5f, 1.0f),  glm::vec4(0.7f, 0.4f, 0.2f, 1.0f) }, // Top Right 
+	};
+
+	unsigned int indices [6]
+	{
+		0, 1, 3,
+		1, 2, 3,
 	};
 
 	GLuint VAO;
@@ -84,6 +87,11 @@ int main()
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	
+	GLuint EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Specify the GPU how the vertex data is to be interpreted
 	// Refers to the currently bound GL_ARRAY_BUFFER
@@ -106,7 +114,6 @@ int main()
 		(void*)(3 * sizeof(GL_FLOAT))
 	);
 	glEnableVertexAttribArray(1);
-
 	
 	// RENDER LOOP
 	//------------
@@ -118,7 +125,7 @@ int main()
 		// Render Vertex Data
 		shaderProgram.Activate();
 		glBindVertexArray(VAO);	
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -152,7 +159,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
-// check if cursor over the window
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	// Hide mouse if over the window
