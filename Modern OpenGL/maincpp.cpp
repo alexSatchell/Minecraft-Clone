@@ -65,18 +65,40 @@ int main()
 	};
 
 	// Data for vertex shader
-	Vertex vertices[] {
+	/*
+	Vertex vertices[]{
 		// Rectangle Vertices
 		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(0.9f, 0.8f, 0.2f, 1.0f) }, // Top Left
 		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.2f, 0.9f, 0.8f, 1.0f) }, // Bottom Left
 		{ glm::vec3(0.5f, -0.5f, 1.0f),  glm::vec4(0.9f, 0.2f, 0.8f, 1.0f) }, // Bottom Right 
 		{ glm::vec3(0.5f, 0.5f, 1.0f),  glm::vec4(0.7f, 0.4f, 0.2f, 1.0f) }, // Top Right 
 	};
+	*/
 
-	unsigned int indices [6]
+	Vertex vertices[10]
 	{
-		0, 1, 3,
+		{ glm::vec3(0.0f, 0.85f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}, // Top
+		{ glm::vec3(0.1f, 0.3f, 1.0f), glm::vec4(0.035f, 1.0f, 0.0f, 1.0f)}, // Top Right
+		{ glm::vec3(0.3f, 0.3f, 1.0f), glm::vec4(0.0f, 0.129f, 1.0f, 1.0f)}, // Top Far Right
+		{ glm::vec3(0.15f, 0.0f, 1.0f), glm::vec4(0.4f, 0.7f, 0.8f, 1.0f)}, // Middle Right 
+		{ glm::vec3(0.25f, -0.5f, 1.0f), glm::vec4(0.5f, 0.6f, 0.1f, 1.0f)}, // Bottom Right 
+		{ glm::vec3(0.0f, -0.2f, 1.0f), glm::vec4(0.6f, 0.5f, 0.3f, 1.0f)}, // Bottom Middle 
+		{ glm::vec3(-0.25f, -0.5f, 1.0f), glm::vec4(0.7f, 0.4f, 0.5f, 1.0f)}, // Bottom Left 
+		{ glm::vec3(-0.15f, 0.0f, 1.0f), glm::vec4(0.8f, 0.3f, 0.7f, 1.0f)}, // Middle Left 
+		{ glm::vec3(-0.3f, 0.3f, 1.0f), glm::vec4(0.9f, 0.2f, 0.9f, 1.0f)}, // Top Far Left 
+		{ glm::vec3(-0.1f, 0.3f, 1.0f), glm::vec4(0.1f, 0.1f, 0.5f, 1.0f)}, // Top Left
+	};
+
+	unsigned int indices [24]
+	{
+		0, 1, 9, 
 		1, 2, 3,
+		3, 4, 5,
+		5, 6, 7, 
+		7, 8, 9, 
+		9, 1, 7,
+		7, 5, 3, 
+		3, 1, 7
 	};
 
 	GLuint VAO;
@@ -125,7 +147,7 @@ int main()
 		// Render Vertex Data
 		shaderProgram.Activate();
 		glBindVertexArray(VAO);	
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
