@@ -136,17 +136,18 @@ int main()
 		(void*)(3 * sizeof(GL_FLOAT))
 	);
 	glEnableVertexAttribArray(1);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
 	// RENDER LOOP
 	//------------
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(
-			256.0f / 230.0f,
-			256.0f / 232.0f,
-			256.0f / 230.0f,
-			// Alpha
-			1.0f);
+			(28.0f / 255.0f),
+			(40.0f / 255.0f),
+			(51.0f / 255.0f),
+			(1.0f));
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Render Vertex Data
