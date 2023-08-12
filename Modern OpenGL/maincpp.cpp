@@ -64,10 +64,9 @@ int main()
 		glm::vec4 color;
 	};
 
-	// Data for vertex shader
 	/*
+	Data for rectangle
 	Vertex vertices[]{
-		// Rectangle Vertices
 		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(0.9f, 0.8f, 0.2f, 1.0f) }, // Top Left
 		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.2f, 0.9f, 0.8f, 1.0f) }, // Bottom Left
 		{ glm::vec3(0.5f, -0.5f, 1.0f),  glm::vec4(0.9f, 0.2f, 0.8f, 1.0f) }, // Bottom Right 
@@ -75,18 +74,19 @@ int main()
 	};
 	*/
 
+	// Data for star
 	Vertex vertices[10]
 	{
 		{ glm::vec3(0.0f, 0.85f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}, // Top
-		{ glm::vec3(0.1f, 0.3f, 1.0f), glm::vec4(0.035f, 1.0f, 0.0f, 1.0f)}, // Top Right
-		{ glm::vec3(0.3f, 0.3f, 1.0f), glm::vec4(0.0f, 0.129f, 1.0f, 1.0f)}, // Top Far Right
-		{ glm::vec3(0.15f, 0.0f, 1.0f), glm::vec4(0.4f, 0.7f, 0.8f, 1.0f)}, // Middle Right 
-		{ glm::vec3(0.25f, -0.5f, 1.0f), glm::vec4(0.5f, 0.6f, 0.1f, 1.0f)}, // Bottom Right 
-		{ glm::vec3(0.0f, -0.2f, 1.0f), glm::vec4(0.6f, 0.5f, 0.3f, 1.0f)}, // Bottom Middle 
-		{ glm::vec3(-0.25f, -0.5f, 1.0f), glm::vec4(0.7f, 0.4f, 0.5f, 1.0f)}, // Bottom Left 
-		{ glm::vec3(-0.15f, 0.0f, 1.0f), glm::vec4(0.8f, 0.3f, 0.7f, 1.0f)}, // Middle Left 
-		{ glm::vec3(-0.3f, 0.3f, 1.0f), glm::vec4(0.9f, 0.2f, 0.9f, 1.0f)}, // Top Far Left 
-		{ glm::vec3(-0.1f, 0.3f, 1.0f), glm::vec4(0.1f, 0.1f, 0.5f, 1.0f)}, // Top Left
+		{ glm::vec3(0.1f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f)}, // Top Right
+		{ glm::vec3(0.3f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f)}, // Top Far Right
+		{ glm::vec3(0.15f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Middle Right 
+		{ glm::vec3(0.25f, -0.5f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)}, // Bottom Right 
+		{ glm::vec3(0.0f, -0.2f, 1.0f), glm::vec4(0.0f, 0.5f, 0.5f, 1.0f)}, // Bottom Middle 
+		{ glm::vec3(-0.25f, -0.5f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)}, // Bottom Left 
+		{ glm::vec3(-0.15f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Middle Left 
+		{ glm::vec3(-0.3f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f)}, // Top Far Left 
+		{ glm::vec3(-0.1f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f)}, // Top Left
 	};
 
 	unsigned int indices [24]
@@ -141,7 +141,12 @@ int main()
 	//------------
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(
+			256.0f / 230.0f,
+			256.0f / 232.0f,
+			256.0f / 230.0f,
+			// Alpha
+			1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Render Vertex Data
