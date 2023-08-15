@@ -64,16 +64,6 @@ int main()
 		glm::vec4 color;
 	};
 
-	/*
-	Data for rectangle
-	Vertex vertices[]{
-		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(0.9f, 0.8f, 0.2f, 1.0f) }, // Top Left
-		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.2f, 0.9f, 0.8f, 1.0f) }, // Bottom Left
-		{ glm::vec3(0.5f, -0.5f, 1.0f),  glm::vec4(0.9f, 0.2f, 0.8f, 1.0f) }, // Bottom Right 
-		{ glm::vec3(0.5f, 0.5f, 1.0f),  glm::vec4(0.7f, 0.4f, 0.2f, 1.0f) }, // Top Right 
-	};
-	*/
-
 	// Data for star
 	Vertex vertices[10]
 	{
@@ -150,8 +140,14 @@ int main()
 			(1.0f));
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		// Activate shader program
+		glUseProgram(shaderProgram.ID);
+
+		// Uniform RGB Value
+		// int horizontalOffset= glGetUniformLocation(shaderProgram.ID, "horizontalOffset");
+		// glUniform1f(horizontalOffset, .5);
+
 		// Render Vertex Data
-		shaderProgram.Activate();
 		glBindVertexArray(VAO);	
 		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 		
