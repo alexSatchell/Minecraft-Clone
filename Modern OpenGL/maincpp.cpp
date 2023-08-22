@@ -68,31 +68,19 @@ int main()
 		glm::vec2 texture;
 	};
 
-	// Data for star
-	Vertex vertices[10]
+	// Data for rectangle
+	Vertex vertices[4]
 	{
-		{ glm::vec3(0.0f, 0.85f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec2(0.5f, 1.0f)}, // Top
-		{ glm::vec3(0.1f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.75f, 0.75f)}, // Top Right
-		{ glm::vec3(0.3f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.75f)}, // Top Far Right
-		{ glm::vec3(0.15f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(0.75f, 0.5f)}, // Middle Right 
-		{ glm::vec3(0.25f, -0.5f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec2(0.85f, 0.0f)}, // Bottom Right 
-		{ glm::vec3(0.0f, -0.2f, 1.0f), glm::vec4(0.0f, 0.5f, 0.5f, 1.0f), glm::vec2(0.5f, 0.0f)}, // Bottom Middle 
-		{ glm::vec3(-0.25f, -0.5f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec2(0.15f, 0.0f)}, // Bottom Left 
-		{ glm::vec3(-0.15f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.5f)}, // Middle Left 
-		{ glm::vec3(-0.3f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.75)}, // Top Far Left 
-		{ glm::vec3(-0.1f, 0.3f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.75f) }, // Top Left
+		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, 
+		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, 
+		{ glm::vec3(0.5f, -0.5f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, 
+		{ glm::vec3(0.5f, 0.5f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, 
 	};
 
-	unsigned int indices[24]
+	unsigned int indices[6]
 	{
-		0, 1, 9,
-		1, 2, 3,
-		3, 4, 5,
-		5, 6, 7,
-		7, 8, 9,
-		9, 1, 7,
-		7, 5, 3,
-		3, 1, 7
+		0, 1, 2, 
+		2, 3, 0,
 	};
 
 	GLuint VAO;
@@ -133,14 +121,13 @@ int main()
 
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(7 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(2);
-
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// TEXTURES
 	//---------
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	unsigned int texture1, texture2;
+	glGenTextures(1, &texture1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
 
 	// set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -150,35 +137,58 @@ int main()
 
 	// load and generate the texture
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load("Metal042A_1K_Color.png", &width, &height, &nrChannels, 0);	
+	unsigned char* dirt_texture = stbi_load("Ground067_1k_Color.png", &width, &height, &nrChannels, 0);	
 
-	if (data)
+	if (dirt_texture)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dirt_texture);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
 	{
 		std::cout << "Failed to load texture" << std::endl;
 	}
-
 	// de-allocate memory for image data 
-	stbi_image_free(data);
+	stbi_image_free(dirt_texture);
 
+	// Texture 2
+	glGenTextures(1, &texture2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	unsigned char* grass_texture = stbi_load("Ground037_1k_Color.png", &width, &height, &nrChannels, 0);
+	if (grass_texture)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, grass_texture);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}	
+	stbi_image_free(grass_texture);
+
+	// Activate program before setting uniforms
+	shaderProgram.Activate();
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "dirt_texture"), 0);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "grass_texture"), 1);
 
 	// RENDER LOOP
 	//------------
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(
-			(28.0f / 255.0f),
-			(40.0f / 255.0f),
-			(51.0f / 255.0f),
-			(1.0f));
+		glClearColor(255.0f, 255.0f, 255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Bind Texture
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		// Activate shader program
 		glUseProgram(shaderProgram.ID);
@@ -189,7 +199,7 @@ int main()
 
 		// Render Vertex Data
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
