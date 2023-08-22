@@ -9,8 +9,8 @@
 #include "Shader.h"
 #include <stb_image.h>
 
-const unsigned int SCR_WIDTH = 1920;
-const unsigned int SCR_HEIGHT = 1080;
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 720;
 
 // Callback function declarations
 // ------------------------------
