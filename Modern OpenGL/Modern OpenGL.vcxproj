@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Alex\Downloads\glad\src\glad.c" />
+    <ClCompile Include="imageLoader.cpp" />
     <ClCompile Include="maincpp.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
@@ -142,7 +143,13 @@
     <None Include="vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Users\Alex\Downloads\stb_image.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Image.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
