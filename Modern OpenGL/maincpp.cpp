@@ -6,6 +6,9 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/vec2.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 #include <stb_image.h>
 
@@ -172,10 +175,13 @@ int main()
 	}	
 	stbi_image_free(grass_texture);
 
+	
 	// Activate program before setting uniforms
 	shaderProgram.Activate();
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "dirt_texture"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "grass_texture"), 1);
+	
+
 
 	// RENDER LOOP
 	//------------
@@ -190,12 +196,20 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
+		// MATRIX TRANSFORMATIONS
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		// trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+
 		// Activate shader program
 		glUseProgram(shaderProgram.ID);
 
 		// Uniform RGB Value
 		// int horizontalOffset= glGetUniformLocation(shaderProgram.ID, "horizontalOffset");
 		// glUniform1f(horizontalOffset, .5);
+		unsigned int transformLocation = glGetUniformLocation(shaderProgram.ID, "transform");
+		glad_glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
 		// Render Vertex Data
 		glBindVertexArray(VAO);
