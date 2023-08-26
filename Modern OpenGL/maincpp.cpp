@@ -12,8 +12,8 @@
 #include "Shader.h"
 #include <stb_image.h>
 
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const float SCR_WIDTH = 1280.0f;
+const float SCR_HEIGHT = 720.0f;
 
 // Callback function declarations
 // ------------------------------
@@ -74,11 +74,12 @@ int main()
 	// Data for rectangle
 	Vertex vertices[4]
 	{
-		{ glm::vec3(-0.5f, 0.5f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, 
-		{ glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, 
-		{ glm::vec3(0.5f, -0.5f, 1.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, 
-		{ glm::vec3(0.5f, 0.5f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, 
+		{ glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // top left
+		{ glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // bottom left
+		{ glm::vec3(0.5f, -0.5f, 0.0f), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // bottom right
+		{ glm::vec3(0.5f, 0.5f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // top right
 	};
+
 
 	unsigned int indices[6]
 	{
@@ -181,7 +182,16 @@ int main()
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "dirt_texture"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "grass_texture"), 1);
 	
+	// Going 3D
+	// --------
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
+	glm::mat4 viewMatrix = glm::mat4(1.0f);
+	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+
+	glm::mat4 projectionMatrix = glm::mat4(1.0f);
+	projectionMatrix = glm::perspective(glm::radians(45.0f), SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
 
 	// RENDER LOOP
 	//------------
@@ -196,20 +206,17 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		// MATRIX TRANSFORMATIONS
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-		// trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-
 		// Activate shader program
 		glUseProgram(shaderProgram.ID);
 
-		// Uniform RGB Value
-		// int horizontalOffset= glGetUniformLocation(shaderProgram.ID, "horizontalOffset");
-		// glUniform1f(horizontalOffset, .5);
-		unsigned int transformLocation = glGetUniformLocation(shaderProgram.ID, "transform");
-		glad_glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
+		int modelMatrixLocation = glGetUniformLocation(shaderProgram.ID, "model");
+		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+		int viewMatrixLocation = glGetUniformLocation(shaderProgram.ID, "view");
+		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+		
+		int projectionMatrixLocation = glGetUniformLocation(shaderProgram.ID, "projection");
+		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 		// Render Vertex Data
 		glBindVertexArray(VAO);
